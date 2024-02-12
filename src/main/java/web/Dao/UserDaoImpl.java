@@ -11,18 +11,20 @@ import java.util.List;
 @Component
 @Transactional
 public class UserDaoImpl implements UserDao {
+    private final static String GET_ALL_USERS = "select u from User u";
+    private final static String GET_USER_BY_ID = "from User u where u.userId = : userId";
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("select u from User u", User.class).getResultList();
+        return entityManager.createQuery(GET_ALL_USERS, User.class).getResultList();
     }
 
     @Override
     public User getUserById(int id) {
-        return entityManager.createQuery("from User u where u.userId = : userId", User.class)
+        return entityManager.createQuery(GET_USER_BY_ID, User.class)
                 .setParameter("userId", id)
                 .getSingleResult();
 
